@@ -1,0 +1,128 @@
+﻿@using TeamManageApp.ViewModels
+@model IssueModel
+@{
+    var priorities = new MultiSelectList(new List<string> { "Low", "Normal", "Critical" });
+    var statuses = new MultiSelectList(new List<string> { "OPEN", "CLOSE" });
+    var reporters = new MultiSelectList(Model.Reporters, "Id", "Login");
+    var asignees = new MultiSelectList(Model.Asignees, "Id", "Login");
+    var linkedIssues = new MultiSelectList(Model.LinkedIssues, "Id", "Name");
+
+    Model.Comments = Model.Issue.Comments;
+    Model.Description = Model.Issue.Description;
+    Model.Status = Model.Issue.Status;
+    Model.Priority = Model.Issue.Priority;
+    Model.ReporterId = Model.Issue.ReporterId;
+    Model.AssigneeId = Model.Issue.AsigneeId;
+}
+
+<a href="/home/index/3" class="btn btn-outline-success">Back</a>
+
+<div><br /></div>
+
+<div class="card" style="background-color:#98FB98">
+    <div style="inset-block-end: 80%;writing-mode: vertical-rl; padding:4px;">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            &#9998;
+        </button>
+    </div>
+    <div class="card">
+        <div class="card-body">
+
+            <h5>@Model.Issue.Name</h5>
+            <br />
+            <p class="card-text">Asignee: @Model.Issue.Asignee.FullName</p>
+            <p class="card-text">Reporter: @Model.Issue.Reporter.FullName</p>
+            <br />
+            <p class="card-text">@Model.Issue.Description</p>
+            <br />
+            <a href="" class="btn btn-outline-success disabled">@Model.Issue.Status</a>
+            <a href="" class="btn btn-success disabled">@Model.Issue.Priority</a>
+            <br />
+            @if (Model?.Issue?.IssueList?.Issues is not null)
+            {
+                <br />
+                <ul class="list-group list-group-numbered">
+                    @foreach (var issue in Model?.Issue?.IssueList?.Issues)
+                    {
+                        <li class="list-group-item">
+                            <a href="/home/index/5/@issue.Id" class="card-text btn btn-link">@issue.Id - @issue.Name</a>
+                        </li>
+                    }
+                </ul>
+                <br />
+            }
+            <br />
+            <p class="card-text">@Model.Issue.Comments</p>
+        </div>
+    </div>
+</div>
+
+<div><br /></div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit issue</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="EditIssue" asp-controller="Home" asp-antiforgery="true">
+                    <div>
+                        <input type="hidden" asp-for="Id" value=@Model.Issue.Id class="form-control" />
+                        <div>
+                            <label class="form-label" asp-for="Name"></label>
+                            <input class="form-control" type="text" asp-for="Name" value=@Model.Issue.Name />
+                        </div>
+
+                        <div>
+                            <label class="form-label" asp-for="AssigneeId">Assignee</label>
+                            <select class="form-select" asp-for="AssigneeId" asp-items=@asignees></select>
+                        </div>
+
+                        <div>
+                            <label class="form-label" asp-for="ReporterId">Reporter</label>
+                            <select class="form-select" asp-for="ReporterId" asp-items=@reporters></select>
+                        </div>
+
+                        <div>
+                            <label class="form-label" asp-for="Description"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3" type="text" data-val="true"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="form-label" asp-for="Comments"></label>
+                            <textarea asp-for="Comments" class="form-control" rows="3" type="text" data-val="true"></textarea>
+                        </div>
+
+
+                        <div>
+                            <label class="form-label" asp-for="Priority">Priority</label>
+                            <select class="form-select" asp-for="Priority" asp-items=@priorities></select>
+                        </div>
+
+                        <div>
+                            <label class="form-label" asp-for="Status">Status</label>
+                            <select class="form-select" asp-for="Status" asp-items=@statuses></select>
+                        </div>
+
+                        <div>
+                            <label class="form-label" asp-for="LinkedIssuesIds">Linked issues</label>
+                            <select class="form-select" asp-for="LinkedIssuesIds" asp-items=@linkedIssues></select>
+                        </div>
+
+                        <div></br></div>
+
+                        <div>
+                            <input type="submit" value="Save" class="btn btn-outline-success" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

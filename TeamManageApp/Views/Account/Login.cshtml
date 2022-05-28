@@ -1,0 +1,33 @@
+﻿@model TeamManageApp.ViewModels.LoginModel
+@{
+    ViewData["Title"] = "Login Page";
+}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-auto">
+
+            <h2>Application entering</h2>
+
+            <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+                <div class="validation" asp-validation-summary="ModelOnly"></div>
+                <div>
+                    <div class="mb-3">
+                        <label asp-for="Login" class="form-label">Enter login</label>
+                        <input type="text" asp-for="Login" class="form-control" />
+                        <span asp-validation-for="Login" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Enter password</label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" />
+                    </div>
+                    <div class="mb-3">
+                        <input type="submit" value="Enter" class="btn btn-outline-success" />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

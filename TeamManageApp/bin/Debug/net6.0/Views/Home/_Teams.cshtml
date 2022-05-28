@@ -1,0 +1,114 @@
+﻿@using TeamManageApp.ViewModels
+@model TeamModel
+@{
+    var users = new MultiSelectList(@Model.Users, "Id", "Login");
+}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add team
+</button>
+
+<div>
+    <br />
+</div>
+
+@if (Model.Teams.Count() != 0)
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var team in Model.Teams)
+        {
+            <div class="col">
+                <div class="card" style="background-color:#98FB98">
+                    <div style="inset-block-end: 80%;writing-mode: vertical-rl; padding:2%;">
+                        <a href="/home/deleteTeam/@team.Id" class="btn btn-outline-success">&#9587;</a>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@team.Name</h5>
+                            <p class="card-text">Team id: @team.Id</p>
+                            <p class="card-text">Creater: @team.Creater.FullName</p>
+                            <p class="card-text">@team.Comments</p>
+                            <p class="card-text">@team.Description</p>
+                            <p class="card-text">From: @team.EstimateFrom.Date.ToShortDateString() To: @team.EstimateTo.Date.ToShortDateString()</p>
+                            <p class="card-text">@team.Methodologies</p>
+                            @if (@team.Users.Count() != 0)
+                            {
+                                <h5>User list:</h5>
+                                <ul class="list-group">
+                                    @foreach (var user in @team.Users)
+                                    {
+                                        <li class="list-group-item">@user.FullName</li>
+                                    }
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add team</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="mb-3">
+
+                    <form asp-action="CreateTeam" asp-controller="Home" asp-antiforgery="true">
+                        <div>
+                            <div>
+                                <label class="form-label" asp-for="Name"></label>
+                                <input class="form-control" type="text" asp-for="Name" />
+                            </div>
+
+                            <div>
+                                <label class="form-label" asp-for="Description"></label>
+                                <input class="form-control" type="text" asp-for="Description" />
+                            </div>
+
+                            <div>
+                                <label class="form-label" asp-for="Comments"></label>
+                                <input class="form-control" type="text" asp-for="Comments" />
+                            </div>
+
+                            <div>
+                                <label class="form-label" asp-for="Methodologies"></label>
+                                <input class="form-control" type="text" asp-for="Methodologies" />
+                            </div>
+
+                            <div>
+                                <label class="form-label" asp-for="EstimateFrom"></label>
+                                <input class="form-control" type="date" asp-for="EstimateFrom" />
+                            </div>
+
+                            <div>
+                                <label class="form-label" asp-for="EstimateTo"></label>
+                                <input class="form-control" type="date" asp-for="EstimateTo" />
+                            </div>
+
+                            <div>
+                                <label asp-for="UsersIds">Users</label>
+                                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" asp-for="UsersIds" asp-items=@users></select>
+                            </div>
+
+                            <div></br></div>
+
+                            <div>
+                                <input type="submit" value="Save" class="btn btn-outline-success" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

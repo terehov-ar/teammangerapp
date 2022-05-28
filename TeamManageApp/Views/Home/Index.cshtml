@@ -1,0 +1,46 @@
+﻿@using TeamManageApp.ViewModels
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-1">
+        <nav class="nav flex-column" style="padding-top:3%;">
+            <div class="btn-group-vertical">
+                <a type="button" class="btn btn-outline-success" aria-current="page" href="/Home/Index/1">Team</a>
+                <a type="button" class="btn btn-outline-success" href="/Home/Index/2">Profile</a>
+                <a type="button" class="btn btn-outline-success" href="/Home/Index/3">My issues</a>
+                @*<a type="button" class="btn btn-outline-success" href="/Home/Index/6">All issues</a>*@
+                <a type="button" class="btn btn-outline-success" href="/Home/Index/4">Users</a>
+            </div>
+        </nav>
+    </div>
+    <div class="col-11">
+        <div class="container">
+            @switch (@ViewBag.State)
+            {
+                case 1:
+                    @await Html.PartialAsync("_Teams", new TeamModel { Users = @ViewBag.UserEditModel as List<UserEditModel>, Teams = @ViewBag.Teams as List<Team>, EstimateFrom = DateTime.Now, EstimateTo = DateTime.Now.AddDays(1)})
+                    break;
+                case 2:
+                    @await Html.PartialAsync("_Profile", (User)@ViewBag.User)
+                    break;
+                case 3:
+                    @await Html.PartialAsync("_MyIssues", new IssueModel { Asignees = @ViewBag.Asignees as List<UserEditModel>, Reporters = @ViewBag.Reporters as List<UserEditModel>, IssuesAsignee = @ViewBag.MyIssuesAsignees as List<Issue>, You = (User)ViewBag.User, LinkedIssues = ViewBag.LinkedIsuues as List<Issue>})
+                    break;
+                case 4:
+                    @await Html.PartialAsync("_Users", new UsersAndNewUserModel { User = @ViewBag.Users as List<User>, Roles = @ViewBag.Roles as List<string> })
+                    break;
+                case 5:
+                    @await Html.PartialAsync("_MyIssue", new IssueModel {Issue = @ViewBag.PickedIssue as Issue, Asignees = @ViewBag.Asignees as List<UserEditModel>, Reporters = @ViewBag.Reporters as List<UserEditModel>, LinkedIssues = ViewBag.LinkedIsuues as List<Issue>})
+                    break;
+                case 6:
+                    @*@await Html.PartialAsync("_AllIssue")*@
+                    break;
+                default:
+                    goto case 3;
+                    break;
+            }
+        </div>
+    </div>
+</div>

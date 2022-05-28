@@ -1,0 +1,73 @@
+﻿@using TeamManageApp.ViewModels
+@model UsersAndNewUserModel
+
+<a href="#" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add user</a>
+
+<div>
+    <br>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var user in Model.User)
+    {
+        <div class="col">
+            <div class="card" style="background-color:#98FB98">
+                <div style="inset-block-end: 80%;writing-mode: vertical-rl; padding:2%;">
+                    <a href="/home/deleteUser/@user.Id" class="btn btn-outline-success">&#9587;</a>
+                </div>
+                <div class="card">
+
+                    <img src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Profile</h5>
+                        <p class="card-text">Id: @user.Id</p>
+                        <p class="card-text">FullName: @user.FullName</p>
+                        <p class="card-text">Login: @user.Login</p>
+                        <p class="card-text">Role: @user.Role</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<br>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Login:</label><br />
+                        <input class="form-control" type="text" name="login" /><br /><br />
+
+                        <label class="form-label">Password:</label><br />
+                        <input class="form-control" type="password" name="password" /><br /><br />
+
+                        <label class="form-label">Full name:</label><br />
+                        <input class="form-control" type="text" name="fullName" /><br /><br />
+                    </div>
+
+                    <label>Role:</label><br />
+                    <select class="form-select" multiple name="role" aria-label="Default select example">
+                        @foreach (var role in @Model.Roles)
+                        {
+                            <option value=@role>@role</option>
+                        }
+                    </select>
+
+                    <br />
+
+                    <input type="submit" value="Submit" class="btn btn-outline-success" />
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
